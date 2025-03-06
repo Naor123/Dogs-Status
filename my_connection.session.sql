@@ -1,0 +1,1 @@
+create TABLE IF NOT EXISTS dogs_status
