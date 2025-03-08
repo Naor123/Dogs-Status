@@ -1,5 +1,6 @@
 # main.py
 from fastapi import FastAPI, HTTPException, Depends
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import mysql.connector
@@ -8,7 +9,13 @@ from datetime import datetime, timedelta
 import math
 
 app = FastAPI()
-
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Change this to your frontend's URL in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Configure MySQL connection pool (adjust connection details as needed)
 dbconfig = {
     "host": "localhost",
@@ -108,15 +115,17 @@ def get_dogs_near_park():
         query = "SELECT * FROM dogs WHERE last_updated >= %s"
         cursor.execute(query, (cutoff,))
         dogs = cursor.fetchall()
-
-        # Filter by distance from the dog park using the haversine formula
         dogs_near = []
         for dog in dogs:
-            if dog['latitude'] is None or dog['longitude'] is None:
-                continue
-            distance = haversine_distance(DOG_PARK_LAT, DOG_PARK_LNG, dog['latitude'], dog['longitude'])
-            if distance <= DOG_PARK_RADIUS_KM:
-                dogs_near.append(dog)
+            dogs_near.append(dog)
+        # Filter by distance from the dog park using the haversine formula
+        
+        # for dog in dogs:
+        #     if dog['latitude'] is None or dog['longitude'] is None:
+        #         continue
+        #     distance = haversine_distance(DOG_PARK_LAT, DOG_PARK_LNG, dog['latitude'], dog['longitude'])
+        #     if distance <= DOG_PARK_RADIUS_KM:
+        #         dogs_near.append(dog)
 
         return dogs_near
     except Exception as e:

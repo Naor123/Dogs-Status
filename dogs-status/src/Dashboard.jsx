@@ -17,7 +17,7 @@ const Dashboard = () => {
           };
           setLocation(coords);
           // Post location to backend
-          fetch('/api/update_location', {
+          fetch('localhost:8000/api/update_location', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(coords)
@@ -32,7 +32,7 @@ const Dashboard = () => {
 
   // Function to fetch dogs that are near the park
   const fetchDogs = () => {
-    fetch('/api/dogs_near_park')
+    fetch('http://localhost:8000/api/dogs_near_park')
       .then((response) => response.json())
       .then((data) => {
         setDogs(data);
