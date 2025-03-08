@@ -12,8 +12,8 @@ app = FastAPI()
 # Configure MySQL connection pool (adjust connection details as needed)
 dbconfig = {
     "host": "localhost",
-    "user": "your_mysql_username",
-    "password": "your_mysql_password",
+    "user": "root",
+    "password": "P@ssw0rd",
     "database": "dogpark"
 }
 cnxpool = pooling.MySQLConnectionPool(pool_name="mypool", pool_size=10, **dbconfig)
